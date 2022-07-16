@@ -1,25 +1,41 @@
 extends KinematicBody2D
 
+const IDLE_COLOR = Color('fbf7f3')
+const FULL_COLOR = Color('fbf7f3')
 const NUM_SHARDS_NEEDED = 5
+
+var room_colors
 
 var num_shards_consumed = 0
 var is_depositing = false
 
 var movement_delay = 0
 var momentum = 0
+var blink_delay = 0
+var blink_speed = 0
 
 signal shard_consumed()
 signal gem_deposited()
 
 
 func _ready():
-	pass
+	$AnimatedSprite.modulate = IDLE_COLOR
 
 
 func _process(delta):
 	if num_shards_consumed >= NUM_SHARDS_NEEDED and not is_depositing:
 		if Input.is_action_pressed("drop_item"):
 			is_depositing = true
+			$AnimatedSprite.modulate = FULL_COLOR
+		elif blink_delay > 0:
+			blink_delay -= delta
+		else:
+			var color_offset = randi() % 6
+			if $AnimatedSprite.modulate == FULL_COLOR:
+				$AnimatedSprite.modulate = room_colors[color_offset]
+			else:
+				$AnimatedSprite.modulate = FULL_COLOR
+			blink_delay = blink_speed
 	if movement_delay > 0:
 		movement_delay -= delta
 	if momentum > 0:
@@ -54,16 +70,21 @@ func _process(delta):
 				is_depositing = false
 				num_shards_consumed = 0
 				$AnimatedSprite.animation = "idle"
+				$AnimatedSprite.modulate = IDLE_COLOR
 			self.position = at
 			if momentum > 0.100:
 				movement_delay = 0.080
+				blink_speed = 0.060
 			elif momentum > 0:
 				movement_delay = 0.100
+				blink_speed = 0.090
 			else:
 				movement_delay = 0.250
+				blink_speed = 0.120
 			momentum = 0.300
 		else:
 			movement_delay = 0.050
+			blink_speed = 0.120
 
 
 func _on_Area2D_body_entered(body):
