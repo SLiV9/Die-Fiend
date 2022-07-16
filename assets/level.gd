@@ -12,6 +12,7 @@ func _ready():
 		spawn_shard_in_room(i)
 		spawn_shard_in_room(i)
 
+
 func spawn_shard_in_room(i):
 	var rooms = [$Room1, $Room2, $Room3, $Room4, $Room5, $Room6]
 	var room = rooms[i]
@@ -27,6 +28,22 @@ func spawn_shard_in_room(i):
 			shard.get_node("AnimatedSprite").modulate = room_colors[i]
 			add_child(shard)
 			return
+
+
+func remove_item_in_room(i):
+	var rooms = [$Room1, $Room2, $Room3, $Room4, $Room5, $Room6]
+	var room = rooms[i]
+	var bodies = room.get_overlapping_bodies()
+	var targets = []
+	for body in bodies:
+		if body is Gem:
+			targets.append(body)
+		elif body is Shard:
+			targets.append(body)
+	if targets.size() > 0:
+		targets.shuffle()
+		var item = targets.pop_front()
+		item.queue_free()
 
 
 func _on_Gremlin_shard_consumed():
@@ -58,7 +75,26 @@ func _on_Roller_rolled():
 				weights[i] += 4
 			elif body is Shard:
 				weights[i] += 1
+	print(weights)
+	for child in get_children():
+		if child is Gem:
+			print(child, child.collision_layer, child.collision_mask)
 	$Hero/Roller.roll(weights)
 
 func _on_MonsterRoller_rolled():
 	$Monster/MonsterRoller.roll([0, 0, 0, 0, 0, 0])
+
+
+func _on_Roller_roll_determined(results):
+	for result in results:
+		remove_item_in_room(result - 1)
+		var opposite_face = 7 - result
+		spawn_shard_in_room(opposite_face - 1)
+
+
+func _on_Room1_body_entered(body):
+	print(body, " entered")
+
+
+func _on_Room1_body_exited(body):
+	print(body, " exited")

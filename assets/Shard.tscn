@@ -21,7 +21,7 @@ animations = [ {
 [node name="Shard" type="StaticBody2D"]
 position = Vector2( 376, 408 )
 collision_layer = 2
-collision_mask = 3
+collision_mask = 7
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
