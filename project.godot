@@ -8,6 +8,28 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "AnimatedSprite",
+"class": "Die",
+"language": "GDScript",
+"path": "res://assets/die.gd"
+}, {
+"base": "StaticBody2D",
+"class": "Gem",
+"language": "GDScript",
+"path": "res://assets/gem.gd"
+}, {
+"base": "StaticBody2D",
+"class": "Shard",
+"language": "GDScript",
+"path": "res://assets/shard.gd"
+} ]
+_global_script_class_icons={
+"Die": "",
+"Gem": "",
+"Shard": ""
+}
+
 [application]
 
 config/name="DieFiend"

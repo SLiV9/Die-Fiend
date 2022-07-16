@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/1bitpack_kenney_monochrome_transparent_packed.png" type="Texture" id=1]
+[ext_resource path="res://assets/gem.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=28]
 extents = Vector2( 7, 7 )
@@ -21,6 +22,7 @@ animations = [ {
 position = Vector2( 488, 424 )
 collision_layer = 2
 collision_mask = 3
+script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 28 )

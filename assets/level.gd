@@ -46,3 +46,19 @@ func _on_Gremlin_gem_deposited():
 		if rooms[i].overlaps_body($Gremlin):
 			gem.get_node("AnimatedSprite").modulate = room_colors[i]
 	add_child(gem)
+
+
+func _on_Roller_rolled():
+	var weights = [0, 0, 0, 0, 0, 0]
+	var rooms = [$Room1, $Room2, $Room3, $Room4, $Room5, $Room6]
+	for i in range(0, 6):
+		var bodies = rooms[i].get_overlapping_bodies()
+		for body in bodies:
+			if body is Gem:
+				weights[i] += 4
+			elif body is Shard:
+				weights[i] += 1
+	$Hero/Roller.roll(weights)
+
+func _on_MonsterRoller_rolled():
+	$Monster/MonsterRoller.roll([0, 0, 0, 0, 0, 0])
