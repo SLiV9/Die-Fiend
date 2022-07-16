@@ -2,6 +2,8 @@ class_name Hero
 extends AnimatedSprite
 
 
+const HEAL_FROM_KILL = 10
+
 var hitpoints = 100
 
 signal attack_hit(damage)
@@ -40,3 +42,9 @@ func _on_Roller_roll_determined(results):
 		damage += result
 	emit_signal("attack_hit", damage)
 	$Attack.text = "Slash! (%s DMG)" % [damage]
+
+
+func _on_Monster_monster_died():
+	if hitpoints > 0:
+		hitpoints += HEAL_FROM_KILL
+		$Hitpoints.text = "HP: %s" %  [hitpoints]

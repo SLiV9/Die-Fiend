@@ -682,6 +682,7 @@ position = Vector2( 672, 320 )
 [connection signal="shard_consumed" from="Gremlin" to="." method="_on_Gremlin_shard_consumed"]
 [connection signal="body_entered" from="Gremlin/Area2D" to="Gremlin" method="_on_Area2D_body_entered"]
 [connection signal="attack_hit" from="Monster" to="Hero" method="_on_Monster_attack_hit"]
+[connection signal="monster_died" from="Monster" to="Hero" method="_on_Monster_monster_died"]
 [connection signal="roll_determined" from="Monster/MonsterRoller" to="Monster" method="_on_MonsterRoller_roll_determined"]
 [connection signal="roll_started" from="Monster/MonsterRoller" to="Monster" method="_on_MonsterRoller_roll_started"]
 [connection signal="rolled" from="Monster/MonsterRoller" to="." method="_on_MonsterRoller_rolled"]
