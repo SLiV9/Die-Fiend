@@ -38,3 +38,6 @@ func hold(weights):
 			return
 		offset -= w
 		frame += 1
+
+func get_result():
+	return 1 + frame
