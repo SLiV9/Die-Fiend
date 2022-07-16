@@ -5,6 +5,7 @@ extends AnimatedSprite
 var hitpoints = 100
 
 signal attack_hit(damage)
+signal hero_died()
 
 
 func _ready():
@@ -18,7 +19,13 @@ func _process(delta):
 
 func _on_Monster_attack_hit(damage):
 	hitpoints -= damage
-	$Hitpoints.text = "HP: %s" %  [hitpoints]
+	if hitpoints > 0:
+		$Hitpoints.text = "HP: %s" %  [hitpoints]
+	else:
+		$Hitpoints.text = "HERO SLAIN"
+		$Attack.text = ""
+		$Roller.visible = false
+		emit_signal("hero_died")
 
 
 func _on_Roller_roll_started():
@@ -26,6 +33,8 @@ func _on_Roller_roll_started():
 
 
 func _on_Roller_roll_determined(results):
+	if hitpoints <= 0:
+		return
 	var damage = 0
 	for result in results:
 		damage += result

@@ -1,7 +1,5 @@
 extends Node2D
 
-export var is_monster = false
-
 export var initial_roll_duration = 5.0
 export var roll_duration = 5.0
 export var hold_duration = 5.0
@@ -15,9 +13,7 @@ signal roll_determined(results)
 
 
 func _ready():
-	hold_delay = roll_duration
-	if is_monster:
-		hold_delay += initial_roll_duration
+	hold_delay = initial_roll_duration + roll_duration
 	roll_delay = hold_delay + hold_duration
 
 
@@ -41,3 +37,9 @@ func roll(weights):
 		die.hold(weights)
 		results.append(die.get_result())
 	emit_signal("roll_determined", results)
+
+func reset():
+	hold_delay = initial_roll_duration + roll_duration
+	roll_delay = hold_delay + hold_duration
+	for die in [$Die1, $Die2, $Die3]:
+		die.roll()

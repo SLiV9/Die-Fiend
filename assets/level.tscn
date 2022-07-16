@@ -572,7 +572,6 @@ __meta__ = {
 modulate = Color( 0.258824, 0.431373, 0.364706, 1 )
 position = Vector2( -800, -320 )
 script = ExtResource( 11 )
-is_monster = true
 roll_duration = 2.0
 hold_duration = 3.0
 
@@ -673,6 +672,7 @@ position = Vector2( 672, 320 )
 [connection signal="roll_started" from="Monster/MonsterRoller" to="Monster" method="_on_MonsterRoller_roll_started"]
 [connection signal="rolled" from="Monster/MonsterRoller" to="." method="_on_MonsterRoller_rolled"]
 [connection signal="attack_hit" from="Hero" to="Monster" method="_on_Hero_attack_hit"]
+[connection signal="hero_died" from="Hero" to="Monster" method="_on_Hero_hero_died"]
 [connection signal="roll_determined" from="Hero/Roller" to="Hero" method="_on_Roller_roll_determined"]
 [connection signal="roll_started" from="Hero/Roller" to="Hero" method="_on_Roller_roll_started"]
 [connection signal="rolled" from="Hero/Roller" to="." method="_on_Roller_rolled"]
