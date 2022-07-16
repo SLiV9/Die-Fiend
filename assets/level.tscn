@@ -438,7 +438,6 @@ shape = SubResource( 30 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Gremlin"]
 frames = SubResource( 2 )
 animation = "idle"
-frame = 1
 playing = true
 offset = Vector2( 0, -1 )
 
@@ -456,6 +455,8 @@ position = Vector2( -8, -8 )
 position = Vector2( 240, 400 )
 collision_layer = 4
 collision_mask = 3
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Room1"]
 shape = SubResource( 31 )
@@ -464,6 +465,8 @@ shape = SubResource( 31 )
 position = Vector2( 240, 240 )
 collision_layer = 4
 collision_mask = 3
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Room2"]
 shape = SubResource( 31 )
@@ -472,6 +475,8 @@ shape = SubResource( 31 )
 position = Vector2( 80, 400 )
 collision_layer = 4
 collision_mask = 3
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Room3"]
 shape = SubResource( 31 )
@@ -480,6 +485,8 @@ shape = SubResource( 31 )
 position = Vector2( 400, 400 )
 collision_layer = 4
 collision_mask = 3
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Room4"]
 shape = SubResource( 31 )
@@ -488,6 +495,8 @@ shape = SubResource( 31 )
 position = Vector2( 240, 560 )
 collision_layer = 4
 collision_mask = 3
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Room5"]
 shape = SubResource( 31 )
@@ -496,6 +505,8 @@ shape = SubResource( 31 )
 position = Vector2( 240, 80 )
 collision_layer = 4
 collision_mask = 3
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Room6"]
 shape = SubResource( 31 )
@@ -667,8 +678,6 @@ position = Vector2( 672, 320 )
 [connection signal="gem_deposited" from="Gremlin" to="." method="_on_Gremlin_gem_deposited"]
 [connection signal="shard_consumed" from="Gremlin" to="." method="_on_Gremlin_shard_consumed"]
 [connection signal="body_entered" from="Gremlin/Area2D" to="Gremlin" method="_on_Area2D_body_entered"]
-[connection signal="body_entered" from="Room1" to="." method="_on_Room1_body_entered"]
-[connection signal="body_exited" from="Room1" to="." method="_on_Room1_body_exited"]
 [connection signal="attack_hit" from="Monster" to="Hero" method="_on_Monster_attack_hit"]
 [connection signal="roll_determined" from="Monster/MonsterRoller" to="Monster" method="_on_MonsterRoller_roll_determined"]
 [connection signal="roll_started" from="Monster/MonsterRoller" to="Monster" method="_on_MonsterRoller_roll_started"]
