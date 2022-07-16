@@ -88,9 +88,10 @@ func _process(delta):
 
 
 func _on_Area2D_body_entered(body):
-	if body is StaticBody2D:
+	if body is Shard or body is Gem:
 		body.queue_free()
-		emit_signal("shard_consumed")
+		if body is Shard:
+			emit_signal("shard_consumed")
 		num_shards_consumed += 1
 		if num_shards_consumed >= NUM_SHARDS_NEEDED:
 			$AnimatedSprite.animation = "jumping"

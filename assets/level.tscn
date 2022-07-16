@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=2]
+[gd_scene load_steps=74 format=2]
 
 [ext_resource path="res://assets/1bitpack_kenney_monochrome_transparent_packed.png" type="Texture" id=1]
 [ext_resource path="res://assets/player.gd" type="Script" id=2]
@@ -12,6 +12,8 @@
 [ext_resource path="res://assets/hero.gd" type="Script" id=10]
 [ext_resource path="res://assets/roller.gd" type="Script" id=11]
 [ext_resource path="res://assets/monster.gd" type="Script" id=12]
+[ext_resource path="res://assets/Pop.tscn" type="PackedScene" id=13]
+[ext_resource path="res://assets/Rock.tscn" type="PackedScene" id=14]
 
 [sub_resource type="ConvexPolygonShape2D" id=7]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
@@ -438,6 +440,7 @@ shape = SubResource( 30 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Gremlin"]
 frames = SubResource( 2 )
 animation = "idle"
+frame = 1
 playing = true
 offset = Vector2( 0, -1 )
 
@@ -512,7 +515,7 @@ monitorable = false
 shape = SubResource( 31 )
 
 [node name="ResourcePreloader" type="ResourcePreloader" parent="."]
-resources = [ PoolStringArray( "Gem", "Shard" ), [ ExtResource( 6 ), ExtResource( 5 ) ] ]
+resources = [ PoolStringArray( "Gem", "Pop", "Rock", "Shard" ), [ ExtResource( 6 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 5 ) ] ]
 
 [node name="Monster" type="AnimatedSprite" parent="."]
 position = Vector2( 800, 0 )

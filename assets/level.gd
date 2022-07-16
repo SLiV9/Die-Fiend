@@ -30,7 +30,7 @@ func spawn_shard_in_room(i):
 			return
 
 
-func remove_item_in_room(i):
+func pop_item_in_room(i):
 	var bbox = room_bbox(i)
 	var targets = []
 	for child in get_children():
@@ -40,6 +40,17 @@ func remove_item_in_room(i):
 	if targets.size() > 0:
 		targets.shuffle()
 		var item = targets.pop_front()
+		var opposite_face = 5 - i
+		if item is Shard:
+			var pop = $ResourcePreloader.get_resource("Pop").instance()
+			pop.position = item.position
+			pop.modulate = item.get_node("AnimatedSprite").modulate
+			add_child(pop)
+			spawn_shard_in_room(5 - i)
+		else:
+			var rock = $ResourcePreloader.get_resource("Rock").instance()
+			rock.position = item.position
+			add_child(rock)
 		item.queue_free()
 
 
@@ -89,6 +100,4 @@ func _on_MonsterRoller_rolled():
 
 func _on_Roller_roll_determined(results):
 	for result in results:
-		remove_item_in_room(result - 1)
-		var opposite_face = 7 - result
-		spawn_shard_in_room(opposite_face - 1)
+		pop_item_in_room(result - 1)
