@@ -35,6 +35,7 @@ func _on_Monster_attack_hit(damage):
 		$Attack.text = ""
 		$Roller.visible = false
 		emit_signal("hero_died")
+		$DeathSfx.play()
 
 
 func _on_Roller_roll_started():
@@ -64,20 +65,32 @@ func _on_Roller_roll_determined(results):
 				b = result
 	if num_sixes == 3:
 		emit_signal("attack_hit", 6, 6)
+		$SlashSfx.play()
 	elif num_sixes == 2:
 		emit_signal("attack_hit", 6, a)
+		$SlashSfx.play()
 	elif num_sixes == 1:
 		emit_signal("attack_hit", a, b)
+		$HackSfx.play()
 	elif num_hexes == 2:
 		emit_signal("hex_hit", a)
 		hex_number += 1
 		if hex_number >= 6:
 			hex_number = 2
+		$HexSfx.play()
 	elif a != null and a >= 3 and results == [a, a, a]:
 		emit_signal("spell_hit", a)
+		match a:
+			3:
+				$IceSfx.play()
+			4:
+				$FireballSfx.play()
+			5:
+				$LightningSfx.play()
 	else:
 		var curse_offset = randi() % CURSES.size()
 		$Attack.text = '"%s" (NO EFFECT)' % [CURSES[curse_offset]]
+		$FailSfx.play()
 
 
 func _on_Monster_monster_died():

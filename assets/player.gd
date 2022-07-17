@@ -28,6 +28,7 @@ func _process(delta):
 		if Input.is_action_pressed("drop_item"):
 			is_depositing = true
 			$AnimatedSprite.modulate = FULL_COLOR
+			$DepositSfx.play()
 		elif blink_delay > 0:
 			blink_delay -= delta
 		else:
@@ -73,6 +74,7 @@ func _process(delta):
 				$AnimatedSprite.animation = "idle"
 				$AnimatedSprite.modulate = IDLE_COLOR
 			self.position = at
+			$StepSfx.play()
 			if momentum > 0.100:
 				movement_delay = 0.080
 				blink_speed = 0.060
@@ -97,3 +99,7 @@ func _on_Area2D_body_entered(body):
 		if num_shards_consumed >= NUM_SHARDS_NEEDED:
 			$AnimatedSprite.animation = "jumping"
 			emit_signal("hunger_satiated")
+			$PickupSfx.play()
+			$PowerupSfx.play()
+		else:
+			$PickupSfx.play()

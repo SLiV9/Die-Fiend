@@ -52,11 +52,13 @@ func pop_item_in_room(i):
 			add_child(pop)
 			item.queue_free()
 			spawn_shard_in_room(5 - i)
+			$PopSfx.play()
 		elif item is Gem and (rand_range(0, 100) < 16.67):
 			var rock = $ResourcePreloader.get_resource("Rock").instance()
 			rock.position = item.position
 			add_child(rock)
 			item.queue_free()
+			$RockSfx.play()
 
 
 func room_bbox(i):

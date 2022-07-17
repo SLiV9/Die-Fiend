@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/drama.wav-9184935da704cff2faa72afbaa0f3e5f.sample"
+
+[deps]
+
+source_file="res://assets/sfx/drama.wav"
+dest_files=[ "res://.import/drama.wav-9184935da704cff2faa72afbaa0f3e5f.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

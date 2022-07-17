@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=2]
+[gd_scene load_steps=110 format=2]
 
 [ext_resource path="res://assets/1bitpack_kenney_monochrome_transparent_packed.png" type="Texture" id=1]
 [ext_resource path="res://assets/player.gd" type="Script" id=2]
@@ -15,6 +15,26 @@
 [ext_resource path="res://assets/Pop.tscn" type="PackedScene" id=13]
 [ext_resource path="res://assets/Rock.tscn" type="PackedScene" id=14]
 [ext_resource path="res://assets/Ability.tscn" type="PackedScene" id=15]
+[ext_resource path="res://assets/sfx/fail1.wav" type="AudioStream" id=16]
+[ext_resource path="res://assets/sfx/step.wav" type="AudioStream" id=17]
+[ext_resource path="res://assets/sfx/pickup.wav" type="AudioStream" id=18]
+[ext_resource path="res://assets/sfx/powerup.wav" type="AudioStream" id=19]
+[ext_resource path="res://assets/sfx/deposit.wav" type="AudioStream" id=20]
+[ext_resource path="res://assets/sfx/rock.wav" type="AudioStream" id=21]
+[ext_resource path="res://assets/sfx/pop.wav" type="AudioStream" id=22]
+[ext_resource path="res://assets/sfx/iceblast_send.wav" type="AudioStream" id=23]
+[ext_resource path="res://assets/sfx/lightning.wav" type="AudioStream" id=24]
+[ext_resource path="res://assets/sfx/fireball_send.wav" type="AudioStream" id=25]
+[ext_resource path="res://assets/sfx/fireball_hit.wav" type="AudioStream" id=26]
+[ext_resource path="res://assets/sfx/iceblast_hit.wav" type="AudioStream" id=27]
+[ext_resource path="res://assets/sfx/hex_laser.wav" type="AudioStream" id=28]
+[ext_resource path="res://assets/sfx/drama.wav" type="AudioStream" id=29]
+[ext_resource path="res://assets/sfx/monster_death.wav" type="AudioStream" id=30]
+[ext_resource path="res://assets/sfx/bite.wav" type="AudioStream" id=31]
+[ext_resource path="res://assets/sfx/hack.wav" type="AudioStream" id=32]
+[ext_resource path="res://assets/sfx/slash.wav" type="AudioStream" id=33]
+[ext_resource path="res://assets/sfx/monster_miss.wav" type="AudioStream" id=34]
+[ext_resource path="res://assets/sfx/scream.wav" type="AudioStream" id=35]
 
 [sub_resource type="ConvexPolygonShape2D" id=7]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
@@ -249,6 +269,12 @@ animations = [ {
 [sub_resource type="RectangleShape2D" id=29]
 extents = Vector2( 8, 8 )
 
+[sub_resource type="AudioStreamRandomPitch" id=82]
+audio_stream = ExtResource( 17 )
+
+[sub_resource type="AudioStreamRandomPitch" id=83]
+audio_stream = ExtResource( 18 )
+
 [sub_resource type="RectangleShape2D" id=31]
 extents = Vector2( 78, 78 )
 
@@ -373,6 +399,24 @@ animations = [ {
 0/shapes = [  ]
 0/z_index = 0
 
+[sub_resource type="AudioStreamRandomPitch" id=87]
+audio_stream = ExtResource( 24 )
+
+[sub_resource type="AudioStreamRandomPitch" id=88]
+audio_stream = ExtResource( 26 )
+
+[sub_resource type="AudioStreamRandomPitch" id=89]
+audio_stream = ExtResource( 27 )
+
+[sub_resource type="AudioStreamRandomPitch" id=91]
+audio_stream = ExtResource( 31 )
+
+[sub_resource type="AudioStreamRandomPitch" id=94]
+audio_stream = ExtResource( 34 )
+
+[sub_resource type="AudioStreamRandomPitch" id=95]
+audio_stream = ExtResource( 35 )
+
 [sub_resource type="AtlasTexture" id=48]
 atlas = ExtResource( 7 )
 region = Rect2( 0, 576, 32, 32 )
@@ -413,6 +457,27 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="AudioStreamRandomPitch" id=81]
+audio_stream = ExtResource( 16 )
+
+[sub_resource type="AudioStreamRandomPitch" id=84]
+audio_stream = ExtResource( 24 )
+
+[sub_resource type="AudioStreamRandomPitch" id=85]
+audio_stream = ExtResource( 25 )
+
+[sub_resource type="AudioStreamRandomPitch" id=86]
+audio_stream = ExtResource( 23 )
+
+[sub_resource type="AudioStreamRandomPitch" id=90]
+audio_stream = ExtResource( 28 )
+
+[sub_resource type="AudioStreamRandomPitch" id=92]
+audio_stream = ExtResource( 32 )
+
+[sub_resource type="AudioStreamRandomPitch" id=93]
+audio_stream = ExtResource( 33 )
+
 [node name="Level" type="Node2D"]
 script = ExtResource( 4 )
 room_colors = [ Color( 0.568627, 0.643137, 0.478431, 1 ), Color( 0.831373, 0.372549, 0.541176, 1 ), Color( 0.447059, 0.639216, 0.909804, 1 ), Color( 0.858824, 0.368627, 0.368627, 1 ), Color( 0.643137, 0.45098, 0.85098, 1 ), Color( 0.878431, 0.643137, 0.431373, 1 ) ]
@@ -441,7 +506,6 @@ shape = SubResource( 30 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Gremlin"]
 frames = SubResource( 2 )
 animation = "idle"
-frame = 1
 playing = true
 offset = Vector2( 0, -1 )
 
@@ -454,6 +518,22 @@ shape = SubResource( 29 )
 
 [node name="Node2D" type="Node2D" parent="Gremlin"]
 position = Vector2( -8, -8 )
+
+[node name="StepSfx" type="AudioStreamPlayer" parent="Gremlin"]
+stream = SubResource( 82 )
+volume_db = -30.596
+
+[node name="PickupSfx" type="AudioStreamPlayer" parent="Gremlin"]
+stream = SubResource( 83 )
+volume_db = -10.495
+
+[node name="PowerupSfx" type="AudioStreamPlayer" parent="Gremlin"]
+stream = ExtResource( 19 )
+volume_db = -5.244
+
+[node name="DepositSfx" type="AudioStreamPlayer" parent="Gremlin"]
+stream = ExtResource( 20 )
+volume_db = -18.354
 
 [node name="Room1" type="Area2D" parent="."]
 position = Vector2( 240, 400 )
@@ -613,6 +693,34 @@ animation = "empty"
 position = Vector2( 672, 320 )
 animation = "empty"
 
+[node name="LightningSfx" type="AudioStreamPlayer" parent="Monster"]
+stream = SubResource( 87 )
+volume_db = -12.235
+
+[node name="FireballSfx" type="AudioStreamPlayer" parent="Monster"]
+stream = SubResource( 88 )
+volume_db = -19.237
+
+[node name="IceSfx" type="AudioStreamPlayer" parent="Monster"]
+stream = SubResource( 89 )
+volume_db = -10.488
+
+[node name="BiteSfx" type="AudioStreamPlayer" parent="Monster"]
+stream = SubResource( 91 )
+volume_db = -10.488
+
+[node name="MissSfx" type="AudioStreamPlayer" parent="Monster"]
+stream = SubResource( 94 )
+volume_db = -15.732
+
+[node name="ScreamSfx" type="AudioStreamPlayer" parent="Monster"]
+stream = SubResource( 95 )
+volume_db = -4.37
+
+[node name="DeathSfx" type="AudioStreamPlayer" parent="Monster"]
+stream = ExtResource( 30 )
+volume_db = -9.613
+
 [node name="Hero" type="AnimatedSprite" parent="."]
 position = Vector2( 800, 320 )
 frames = SubResource( 56 )
@@ -691,6 +799,38 @@ position = Vector2( 640, 320 )
 
 [node name="Die3" parent="Hero/Roller" instance=ExtResource( 9 )]
 position = Vector2( 672, 320 )
+
+[node name="FailSfx" type="AudioStreamPlayer" parent="Hero"]
+stream = SubResource( 81 )
+volume_db = -14.857
+
+[node name="LightningSfx" type="AudioStreamPlayer" parent="Hero"]
+stream = SubResource( 84 )
+volume_db = -12.235
+
+[node name="FireballSfx" type="AudioStreamPlayer" parent="Hero"]
+stream = SubResource( 85 )
+volume_db = -6.118
+
+[node name="IceSfx" type="AudioStreamPlayer" parent="Hero"]
+stream = SubResource( 86 )
+volume_db = -10.488
+
+[node name="HexSfx" type="AudioStreamPlayer" parent="Hero"]
+stream = SubResource( 90 )
+volume_db = -10.488
+
+[node name="HackSfx" type="AudioStreamPlayer" parent="Hero"]
+stream = SubResource( 92 )
+volume_db = -8.739
+
+[node name="SlashSfx" type="AudioStreamPlayer" parent="Hero"]
+stream = SubResource( 93 )
+volume_db = -8.739
+
+[node name="DeathSfx" type="AudioStreamPlayer" parent="Hero"]
+stream = ExtResource( 29 )
+volume_db = -10.488
 
 [node name="Ability" parent="." instance=ExtResource( 15 )]
 die2 = 6
@@ -777,6 +917,14 @@ deposit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="PopSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 22 )
+volume_db = -13.109
+
+[node name="RockSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 21 )
+volume_db = -15.731
 
 [connection signal="gem_deposited" from="Gremlin" to="." method="_on_Gremlin_gem_deposited"]
 [connection signal="hunger_satiated" from="Gremlin" to="." method="_on_Gremlin_hunger_satiated"]

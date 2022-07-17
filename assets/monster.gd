@@ -161,8 +161,13 @@ func _on_MonsterRoller_roll_determined(results):
 		else:
 			$Attack.text = "Hit!"
 		emit_signal("attack_hit", damage)
+		if NAMES[monster_offset] == "Horror":
+			$ScreamSfx.play()
+		else:
+			$BiteSfx.play()
 	else:
 		$Attack.text = "Miss!"
+		$MissSfx.play()
 
 
 func _on_MonsterRoller_roll_started():
@@ -232,6 +237,7 @@ func hero_dealt_damage(damage):
 		respawn_delay = 2.0
 		hex_end_delay = -1
 		emit_signal("monster_died")
+		$DeathSfx.play()
 
 
 func _on_Hero_hero_died():
@@ -263,6 +269,13 @@ func _on_Hero_spell_hit(a):
 		text = "%s! (%s DMG)" % [spell, damage]
 	emit_signal("hero_attack_resolved", text)
 	hero_dealt_damage(damage)
+	match a:
+		3:
+			$IceSfx.play()
+		4:
+			$FireballSfx.play()
+		5:
+			$LightningSfx.play()
 
 
 func _on_Hero_hex_hit(a):
