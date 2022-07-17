@@ -22,9 +22,13 @@ func _process(delta):
 
 func roll():
 	is_rolling = true
+	if animation == "colored":
+		animation = "rolling"
 
 func hold(weights):
 	is_rolling = false
+	if animation == "rolling":
+		animation = "colored"
 	frame = randi() % 6
 	var total_weight = 0
 	for w in weights:
