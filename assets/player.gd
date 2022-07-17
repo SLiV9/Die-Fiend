@@ -15,6 +15,7 @@ var blink_delay = 0
 var blink_speed = 0
 
 signal shard_consumed()
+signal hunger_satiated()
 signal gem_deposited()
 
 
@@ -95,3 +96,4 @@ func _on_Area2D_body_entered(body):
 		num_shards_consumed += 1
 		if num_shards_consumed >= NUM_SHARDS_NEEDED:
 			$AnimatedSprite.animation = "jumping"
+			emit_signal("hunger_satiated")

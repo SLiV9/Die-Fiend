@@ -441,6 +441,7 @@ shape = SubResource( 30 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Gremlin"]
 frames = SubResource( 2 )
 animation = "idle"
+frame = 1
 playing = true
 offset = Vector2( 0, -1 )
 
@@ -756,7 +757,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="SpacePrompt" type="RichTextLabel" parent="."]
+visible = false
+margin_left = -32.0
+margin_top = 80.0
+margin_right = 96.0
+margin_bottom = 256.0
+custom_colors/default_color = Color( 0.976471, 0.980392, 0.984314, 0.705882 )
+custom_fonts/normal_font = ExtResource( 8 )
+bbcode_enabled = true
+bbcode_text = "[center]press
+[color=#f9fafb]SPACE[/color]
+to
+deposit[/center]"
+text = "press
+SPACE
+to
+deposit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="gem_deposited" from="Gremlin" to="." method="_on_Gremlin_gem_deposited"]
+[connection signal="hunger_satiated" from="Gremlin" to="." method="_on_Gremlin_hunger_satiated"]
 [connection signal="shard_consumed" from="Gremlin" to="." method="_on_Gremlin_shard_consumed"]
 [connection signal="body_entered" from="Gremlin/Area2D" to="Gremlin" method="_on_Area2D_body_entered"]
 [connection signal="attack_hit" from="Monster" to="Hero" method="_on_Monster_attack_hit"]

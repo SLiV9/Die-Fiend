@@ -85,6 +85,7 @@ func _on_Gremlin_gem_deposited():
 		if room_bbox(i).has_point($Gremlin.position):
 			gem.get_node("AnimatedSprite").modulate = room_colors[i]
 	add_child(gem)
+	$SpacePrompt.visible = false
 
 
 func determine_weights():
@@ -136,3 +137,7 @@ func update_probabilities():
 	bbcode = bbcode.replace("{5}", "[img]res://assets/dice_icons/dice_colored5.png[/img]")
 	bbcode = bbcode.replace("{6}", "[img]res://assets/dice_icons/dice_colored6.png[/img]")
 	$Probabilities.bbcode_text = bbcode
+
+
+func _on_Gremlin_hunger_satiated():
+	$SpacePrompt.visible = true
