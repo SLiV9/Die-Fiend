@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "AnimatedSprite",
+"class": "Ability",
+"language": "GDScript",
+"path": "res://assets/ability.gd"
+}, {
+"base": "AnimatedSprite",
 "class": "Die",
 "language": "GDScript",
 "path": "res://assets/die.gd"
@@ -35,6 +40,7 @@ _global_script_classes=[ {
 "path": "res://assets/shard.gd"
 } ]
 _global_script_class_icons={
+"Ability": "",
 "Die": "",
 "Gem": "",
 "Hero": "",

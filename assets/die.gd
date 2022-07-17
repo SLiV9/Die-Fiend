@@ -39,5 +39,14 @@ func hold(weights):
 		offset -= w
 		frame += 1
 
+func fix(number):
+	is_rolling = false
+	if number == 7:
+		frame = 7
+	elif number >= 1:
+		frame = number - 1
+	else:
+		frame = 6
+
 func get_result():
 	return 1 + frame

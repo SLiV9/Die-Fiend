@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=2]
+[gd_scene load_steps=75 format=2]
 
 [ext_resource path="res://assets/1bitpack_kenney_monochrome_transparent_packed.png" type="Texture" id=1]
 [ext_resource path="res://assets/player.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://assets/monster.gd" type="Script" id=12]
 [ext_resource path="res://assets/Pop.tscn" type="PackedScene" id=13]
 [ext_resource path="res://assets/Rock.tscn" type="PackedScene" id=14]
+[ext_resource path="res://assets/Ability.tscn" type="PackedScene" id=15]
 
 [sub_resource type="ConvexPolygonShape2D" id=7]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
@@ -678,16 +679,74 @@ position = Vector2( 640, 320 )
 [node name="Die3" parent="Hero/Roller" instance=ExtResource( 9 )]
 position = Vector2( 672, 320 )
 
+[node name="Ability" parent="." instance=ExtResource( 15 )]
+die2 = 6
+description = "Slash: 10 (+5)"
+
+[node name="Ability2" parent="." instance=ExtResource( 15 )]
+position = Vector2( 608, 528 )
+frame = 1
+description = "Hack: A x B"
+
+[node name="Ability3" parent="." instance=ExtResource( 15 )]
+position = Vector2( 608, 576 )
+frame = 2
+die2 = 7
+die3 = 7
+description = "Pierce: KILL"
+
+[node name="Ability4" parent="." instance=ExtResource( 15 )]
+position = Vector2( 608, 624 )
+frame = 3
+die3 = 2
+description = "(FREE +5 HP)"
+
+[node name="Ability5" parent="." instance=ExtResource( 15 )]
+position = Vector2( 960, 480 )
+frame = 4
+die1 = 5
+die2 = 5
+die3 = 5
+description = "Lightning Bolt: 25"
+
+[node name="Ability6" parent="." instance=ExtResource( 15 )]
+position = Vector2( 960, 528 )
+frame = 5
+die1 = 4
+die2 = 4
+die3 = 4
+description = "Fireball: 20"
+
+[node name="Ability7" parent="." instance=ExtResource( 15 )]
+position = Vector2( 960, 576 )
+frame = 6
+die1 = 3
+die2 = 3
+die3 = 3
+description = "Cone of Cold: 15"
+
+[node name="Hex" parent="." instance=ExtResource( 15 )]
+position = Vector2( 960, 624 )
+frame = 7
+die1 = 2
+die2 = 2
+description = "Hex: CONFUSE"
+
 [connection signal="gem_deposited" from="Gremlin" to="." method="_on_Gremlin_gem_deposited"]
 [connection signal="shard_consumed" from="Gremlin" to="." method="_on_Gremlin_shard_consumed"]
 [connection signal="body_entered" from="Gremlin/Area2D" to="Gremlin" method="_on_Area2D_body_entered"]
 [connection signal="attack_hit" from="Monster" to="Hero" method="_on_Monster_attack_hit"]
+[connection signal="hero_attack_resolved" from="Monster" to="Hero" method="_on_Monster_hero_attack_resolved"]
+[connection signal="hero_healed" from="Monster" to="Hero" method="_on_Monster_hero_healed"]
 [connection signal="monster_died" from="Monster" to="Hero" method="_on_Monster_monster_died"]
 [connection signal="roll_determined" from="Monster/MonsterRoller" to="Monster" method="_on_MonsterRoller_roll_determined"]
 [connection signal="roll_started" from="Monster/MonsterRoller" to="Monster" method="_on_MonsterRoller_roll_started"]
 [connection signal="rolled" from="Monster/MonsterRoller" to="." method="_on_MonsterRoller_rolled"]
 [connection signal="attack_hit" from="Hero" to="Monster" method="_on_Hero_attack_hit"]
 [connection signal="hero_died" from="Hero" to="Monster" method="_on_Hero_hero_died"]
+[connection signal="hex_hit" from="Hero" to="Monster" method="_on_Hero_hex_hit"]
+[connection signal="hex_hit" from="Hero" to="Hex" method="_on_Hero_hex_hit"]
+[connection signal="spell_hit" from="Hero" to="Monster" method="_on_Hero_spell_hit"]
 [connection signal="roll_determined" from="Hero/Roller" to="." method="_on_Roller_roll_determined"]
 [connection signal="roll_determined" from="Hero/Roller" to="Hero" method="_on_Roller_roll_determined"]
 [connection signal="roll_started" from="Hero/Roller" to="Hero" method="_on_Roller_roll_started"]

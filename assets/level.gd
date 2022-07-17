@@ -40,18 +40,18 @@ func pop_item_in_room(i):
 	if targets.size() > 0:
 		targets.shuffle()
 		var item = targets.pop_front()
-		var opposite_face = 5 - i
 		if item is Shard:
 			var pop = $ResourcePreloader.get_resource("Pop").instance()
 			pop.position = item.position
 			pop.modulate = item.get_node("AnimatedSprite").modulate
 			add_child(pop)
+			item.queue_free()
 			spawn_shard_in_room(5 - i)
-		else:
+		elif item is Gem and (rand_range(0, 100) < 16.67):
 			var rock = $ResourcePreloader.get_resource("Rock").instance()
 			rock.position = item.position
 			add_child(rock)
-		item.queue_free()
+			item.queue_free()
 
 
 func room_bbox(i):
@@ -95,7 +95,11 @@ func _on_Roller_rolled():
 	$Hero/Roller.roll(weights)
 
 func _on_MonsterRoller_rolled():
-	$Monster/MonsterRoller.roll([0, 0, 0, 0, 0, 0])
+	var weights = [0, 0, 0, 0, 0, 0]
+	if $Monster.is_hexed():
+		# Only roll twos.
+		weights[1] = 2
+	$Monster/MonsterRoller.roll(weights)
 
 
 func _on_Roller_roll_determined(results):
