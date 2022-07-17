@@ -14,7 +14,7 @@ func _ready():
 
 
 func _on_Hero_hex_hit():
-	die1 += 2
+	die1 += 1
 	if die1 >= 6:
 		die1 = 2
 	die2 = die1

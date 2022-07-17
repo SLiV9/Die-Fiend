@@ -2,23 +2,35 @@ class_name Monster
 extends AnimatedSprite
 
 const NUM_MONSTERS = 22
-const NAMES = ["Rodent", "Spiders", "Bat", "Slimes", "Big Beetle", "Slime Head", "Zombie",
+const NAMES = ["Rodent", "Spiders", "Slimes", "Big Beetle", "Zombie", "Slime Head", "Bat",
 	"Giant Centipede", "Wyvern", "Giant Spider", "Goblin", "Snake", "Skeleton", "Giant Bat",
 	"Orc", "Giant Scorpion", "Ogre", "Horror", "Cyclops", "Beholder", "Golem", "Demon"]
-const HITPOINTS = [20, 20, 20, 30, 40, 40, 60,
+const HITPOINTS = [20, 30, 30, 40, 60, 40, 20,
 	30, 30, 40, 50, 40, 60, 40,
 	60, 40, 80, 70, 80, 60, 100, 90]
-const ATTACK_DAMAGE = [1, 3, 5, 3, 4, 4, 2,
+const ATTACK_DAMAGE = [1, 3, 3, 4, 2, 4, 3,
 	5, 10, 8, 6, 5, 6, 5,
 	6, 10, 5, 8, 15, 6, 7, 20]
-const WEAKSPOTS = [3, 3, 3, -1, 5, -1, 2,
+const WEAKSPOTS = [3, 3, -1, 5, 2, -1, 3,
 	3, 4, 3, 5, 4, 2, 3,
-	5, -1, -1, -1, 1, -1, -1, -1]
+	5, -1, 3, -1, 1, -1, -1, -1]
+const VULNERABILITIES = [[], [4], [], [], [4], [], [],
+	[4], [3], [4], [3], [], [2], [],
+	[], [], [], [], [], [], [], []]
+const FULL_IMMUNITIES = [[], [], [], [], [], [], [6],
+	[], [], [], [], [], [], [6],
+	[], [], [], [1,6], [], [], [], [3,4,5]]
+const SPELL_IMMUNITIES = [[], [], [], [], [3], [], [],
+	[], [4], [], [], [3,4,5], [], [],
+	[], [], [], [], [], [5], [], []]
 
 var monster_offset = 0
 var hitpoints = 40
 var attack_damage = 5
 var weakspot_number = 3
+var vulnerabilities = []
+var full_immunities = []
+var spell_immunities = []
 
 var respawn_delay = 0
 var hex_end_delay = 0
@@ -30,17 +42,66 @@ signal monster_died()
 
 
 func _ready():
+	frame = monster_offset
 	hitpoints = HITPOINTS[monster_offset]
 	attack_damage = ATTACK_DAMAGE[monster_offset]
 	weakspot_number = WEAKSPOTS[monster_offset]
+	vulnerabilities = VULNERABILITIES[monster_offset]
+	full_immunities = FULL_IMMUNITIES[monster_offset]
+	spell_immunities = SPELL_IMMUNITIES[monster_offset]
 	$Name.text = NAMES[monster_offset]
 	$Hitpoints.text = "HP: %s" %  [hitpoints]
 	$Attack.text = ""
+	$Description.bbcode_text = build_description_bbcode()
+
+
+func build_description_bbcode():
+	var bbcode = "%s ATK" % [attack_damage]
+	if NAMES[monster_offset] == "Snake":
+		bbcode = "%s\n%s" % [bbcode, "Also crits with (1)(1)."]
+	elif NAMES[monster_offset] == "Beholder":
+		bbcode = "%s\n%s" % [bbcode, "Also hits with (1)'s."]
+	elif NAMES[monster_offset] == "Cyclops":
+		bbcode = "%s\n%s" % [bbcode, "Needs exactly one (1) to hit."]
+	if full_immunities == [6]:
+		bbcode = "%s\nImmune to {6} (except {6}{w}{w})." % [bbcode]
+	elif full_immunities.size() > 0:
+		var faces = PoolStringArray()
+		for x in full_immunities:
+			faces.append("{%s}" % [x])
+		bbcode = "%s\nImmune to %s." % [bbcode, faces.join("/")]
+	if spell_immunities.size() > 0:
+		var faces = PoolStringArray()
+		for x in spell_immunities:
+			faces.append("{%s}{%s}{%s}" % [x, x, x])
+		bbcode = "%s\nImmune to %s." % [bbcode, faces.join("/")]
+	if vulnerabilities.size() > 0:
+		var faces = PoolStringArray()
+		for x in vulnerabilities:
+			faces.append("{%s}" % [x])
+		bbcode = "%s\nVulnerable to %s." % [bbcode, faces.join("/")]
+	if weakspot_number >= 0:
+		bbcode = "%s\n{w} = {%s}" % [bbcode, weakspot_number]
+	else:
+		bbcode = "%s\n{w} = {%s}" % [bbcode, 7]
+	bbcode = bbcode.replace("(1)", "[img]res://assets/dice_icons/enemy_1.png[/img]")
+	bbcode = bbcode.replace("{1}", "[img]res://assets/dice_icons/dice_colored1.png[/img]")
+	bbcode = bbcode.replace("{2}", "[img]res://assets/dice_icons/dice_colored2.png[/img]")
+	bbcode = bbcode.replace("{3}", "[img]res://assets/dice_icons/dice_colored3.png[/img]")
+	bbcode = bbcode.replace("{4}", "[img]res://assets/dice_icons/dice_colored4.png[/img]")
+	bbcode = bbcode.replace("{5}", "[img]res://assets/dice_icons/dice_colored5.png[/img]")
+	bbcode = bbcode.replace("{6}", "[img]res://assets/dice_icons/dice_colored6.png[/img]")
+	bbcode = bbcode.replace("{7}", "[img]res://assets/dice_icons/dice_colored7.png[/img]")
+	bbcode = bbcode.replace("{w}", "[img]res://assets/dice_icons/dice_colored_skull.png[/img]")
+	bbcode = bbcode.replace("{?}", "[img]res://assets/dice_icons/dice_colored_empty.png[/img]")
+	return bbcode
 
 
 func _process(delta):
 	if respawn_delay > 0:
 		respawn_delay -= delta
+		if Input.is_action_pressed("__cheat_next_monster"):
+			respawn_delay -= 1000
 		if respawn_delay < 0:
 			monster_offset += 1
 			var is_super = false
@@ -51,17 +112,23 @@ func _process(delta):
 			hitpoints = HITPOINTS[monster_offset]
 			attack_damage = ATTACK_DAMAGE[monster_offset]
 			weakspot_number = WEAKSPOTS[monster_offset]
+			vulnerabilities = VULNERABILITIES[monster_offset]
+			full_immunities = FULL_IMMUNITIES[monster_offset]
+			spell_immunities = SPELL_IMMUNITIES[monster_offset]
 			if is_super:
 				hitpoints *= 10
 				attack_damage *= 5
 				$Name.text = "Super " + NAMES[monster_offset]
 			else:
 				$Name.text = NAMES[monster_offset]
+			$Description.bbcode_text = build_description_bbcode()
 			$Hitpoints.text = "HP: %s" %  [hitpoints]
 			$MonsterRoller.reset()
 			$MonsterRoller.visible = true
 	elif hex_end_delay > 0:
 		hex_end_delay -= delta
+	elif Input.is_action_just_pressed("__cheat_next_monster"):
+		hero_dealt_damage(1000)
 
 
 func _on_MonsterRoller_roll_determined(results):
@@ -103,16 +170,19 @@ func _on_MonsterRoller_roll_started():
 
 
 func _on_Hero_attack_hit(a, b):
-	if a == 6 and b == 6:
+	if a == 6 and b == 6 and not full_immunities.has(6):
 		var damage = 15
-		var text = "Crit Slash! (%s DMG)" % [damage]
+		var text = "Stab! (%s DMG)" % [damage]
 		emit_signal("hero_attack_resolved", text)
 		hero_dealt_damage(damage)
-	elif a == 6 or b == 6:
+	elif a == 6 and not full_immunities.has(6) and not full_immunities.has(b):
 		var damage = 10
 		var text = "Slash! (%s DMG)" % [damage]
+		if vulnerabilities.has(b):
+			damage *= 2
+			text = "Powerful Slash! (%s DMG)" % [damage]
 		emit_signal("hero_attack_resolved", text)
-		if a == 2 or b == 2:
+		if b == 2:
 			emit_signal("hero_healed", 5)
 		hero_dealt_damage(damage)
 	elif a == b and a == weakspot_number:
@@ -131,9 +201,18 @@ func _on_Hero_attack_hit(a, b):
 		if a == 2 or b == 2:
 			emit_signal("hero_healed", 5)
 		hero_dealt_damage(1000)
+	elif full_immunities.has(6):
+		var text = "Miss! (IMMUNE)"
+		emit_signal("hero_attack_resolved", text)
+	elif full_immunities.has(a) or full_immunities.has(b):
+		var text = "Miss! (IMMUNE)"
+		emit_signal("hero_attack_resolved", text)
 	else:
 		var damage = a * b
 		var text = "Hack! (%s DMG)" % [damage]
+		if vulnerabilities.has(a) or vulnerabilities.has(b):
+			damage = damage * 3 / 2
+			text = "Powerful Hack! (%s DMG)" % [damage]
 		emit_signal("hero_attack_resolved", text)
 		if a == 2 or b == 2:
 			emit_signal("hero_healed", 5)
@@ -150,7 +229,8 @@ func hero_dealt_damage(damage):
 		$Hitpoints.text = "FOE SLAIN"
 		$Attack.text = ""
 		$MonsterRoller.visible = false
-		respawn_delay = 5.0
+		respawn_delay = 2.0
+		hex_end_delay = -1
 		emit_signal("monster_died")
 
 
@@ -159,25 +239,38 @@ func _on_Hero_hero_died():
 
 
 func _on_Hero_spell_hit(a):
+	var damage
+	var spell
 	match a:
 		3:
-			var damage = 15
-			var text = "Cone of Cold! (%s DMG)" % [damage]
-			emit_signal("hero_attack_resolved", text)
-			hero_dealt_damage(damage)
+			damage = 15
+			spell = "Cone of Cold"
 		4:
-			var damage = 20
-			var text = "Fireball! (%s DMG)" % [damage]
-			emit_signal("hero_attack_resolved", text)
-			hero_dealt_damage(damage)
+			damage = 20
+			spell = "Fireball"
 		5:
-			var damage = 25
-			var text = "Lighting Bolt! (%s DMG)" % [damage]
-			emit_signal("hero_attack_resolved", text)
-			hero_dealt_damage(damage)
+			damage = 25
+			spell = "Lighting Bolt"
+	var text
+	if full_immunities.has(a) or spell_immunities.has(a):
+		text = "%s! (0 DMG, IMMUNE)" % [spell]
+		emit_signal("hero_attack_resolved", text)
+		return
+	if vulnerabilities.has(a):
+		damage *= 2
+		text = "%s! (%s DMG, POWERFUL!)" % [spell, damage]
+	else:
+		text = "%s! (%s DMG)" % [spell, damage]
+	emit_signal("hero_attack_resolved", text)
+	hero_dealt_damage(damage)
 
 
-func _on_Hero_hex_hit():
+func _on_Hero_hex_hit(a):
+	if full_immunities.has(a):
+		var text = "Miss! (IMMUNE)"
+		emit_signal("hero_attack_resolved", text)
+		return
+	emit_signal("hero_attack_resolved", "Hex!")
 	hex_end_delay = 20.0
 
 

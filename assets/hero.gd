@@ -14,7 +14,7 @@ var hex_number = 2
 
 signal attack_hit(a, b)
 signal spell_hit(a)
-signal hex_hit()
+signal hex_hit(a)
 signal hero_died()
 
 
@@ -24,10 +24,6 @@ func _ready():
 	$Name.text = NAMES[frame]
 	$Hitpoints.text = "HP: %s" %  [hitpoints]
 	$Attack.text = ""
-
-
-func _process(delta):
-	pass
 
 
 func _on_Monster_attack_hit(damage):
@@ -56,12 +52,16 @@ func _on_Roller_roll_determined(results):
 		if result == 6:
 			num_sixes += 1
 		else:
-			if a == null:
+			if result == hex_number:
+				num_hexes += 1
+				if b == null:
+					b = result
+				elif a == null:
+					a = result
+			elif a == null:
 				a = result
 			elif b == null:
 				b = result
-			if result == hex_number:
-				num_hexes += 1
 	if num_sixes == 3:
 		emit_signal("attack_hit", 6, 6)
 	elif num_sixes == 2:
@@ -69,11 +69,11 @@ func _on_Roller_roll_determined(results):
 	elif num_sixes == 1:
 		emit_signal("attack_hit", a, b)
 	elif num_hexes == 2:
-		emit_signal("hex_hit")
+		emit_signal("hex_hit", a)
 		hex_number += 1
 		if hex_number >= 6:
 			hex_number = 2
-	elif results == [a, a, a] and a >= 3:
+	elif a != null and a >= 3 and results == [a, a, a]:
 		emit_signal("spell_hit", a)
 	else:
 		var curse_offset = randi() % CURSES.size()
