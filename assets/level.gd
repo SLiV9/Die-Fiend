@@ -11,6 +11,11 @@ func _ready():
 		spawn_shard_in_room(i)
 		spawn_shard_in_room(i)
 		spawn_shard_in_room(i)
+	update_probabilities()
+
+
+func _process(_delta):
+	update_probabilities()
 
 
 func spawn_shard_in_room(i):
@@ -82,7 +87,7 @@ func _on_Gremlin_gem_deposited():
 	add_child(gem)
 
 
-func _on_Roller_rolled():
+func determine_weights():
 	var weights = [0, 0, 0, 0, 0, 0]
 	for child in get_children():
 		if child is Shard or child is Gem:
@@ -92,6 +97,11 @@ func _on_Roller_rolled():
 						weights[i] += 4
 					elif child is Shard:
 						weights[i] += 1
+	return weights
+
+
+func _on_Roller_rolled():
+	var weights = determine_weights()
 	$Hero/Roller.roll(weights)
 
 func _on_MonsterRoller_rolled():
@@ -105,3 +115,24 @@ func _on_MonsterRoller_rolled():
 func _on_Roller_roll_determined(results):
 	for result in results:
 		pop_item_in_room(result - 1)
+
+
+func update_probabilities():
+	var weights = determine_weights()
+	var total_weight = 0
+	for w in weights:
+		total_weight += w
+	var bbcode = ""
+	for i in range(0, 6):
+		var die = 1 + i
+		var probability = 16.67
+		if total_weight > 0:
+			probability = round(1000 * weights[i] / total_weight) / 10
+		bbcode = "%s\n{%s}: %s%%" % [bbcode, die, probability]
+	bbcode = bbcode.replace("{1}", "[img]res://assets/dice_icons/dice_colored1.png[/img]")
+	bbcode = bbcode.replace("{2}", "[img]res://assets/dice_icons/dice_colored2.png[/img]")
+	bbcode = bbcode.replace("{3}", "[img]res://assets/dice_icons/dice_colored3.png[/img]")
+	bbcode = bbcode.replace("{4}", "[img]res://assets/dice_icons/dice_colored4.png[/img]")
+	bbcode = bbcode.replace("{5}", "[img]res://assets/dice_icons/dice_colored5.png[/img]")
+	bbcode = bbcode.replace("{6}", "[img]res://assets/dice_icons/dice_colored6.png[/img]")
+	$Probabilities.bbcode_text = bbcode

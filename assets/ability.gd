@@ -13,7 +13,7 @@ func _ready():
 	$Name.text = description
 
 
-func _on_Hero_hex_hit():
+func _on_Hero_hex_hit(_a):
 	die1 += 1
 	if die1 >= 6:
 		die1 = 2
