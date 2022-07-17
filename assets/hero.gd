@@ -9,7 +9,7 @@ const NAMES = ["Krem the Adventurer", "Borf the Woodsman", "Yonka the Barbarian"
 const CURSES = ["Oops!", "Drat!", "Curses!", "Nope.", "Argh!", "Yikes.",
 	"Welp."]
 
-var hitpoints = 100
+var hitpoints = 250
 var hex_number = 2
 
 signal attack_hit(a, b)

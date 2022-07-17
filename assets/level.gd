@@ -16,6 +16,8 @@ func _ready():
 
 func _process(_delta):
 	update_probabilities()
+	if Input.is_action_just_released("restart_game"):
+		var _ok = get_tree().change_scene("res://assets/level.tscn")
 
 
 func spawn_shard_in_room(i):

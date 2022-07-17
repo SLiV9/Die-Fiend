@@ -5,15 +5,15 @@ const NUM_MONSTERS = 22
 const NAMES = ["Rodent", "Spiders", "Slimes", "Big Beetle", "Zombie", "Slime Head", "Bat",
 	"Giant Centipede", "Wyvern", "Giant Spider", "Goblin", "Snake", "Skeleton", "Giant Bat",
 	"Orc", "Giant Scorpion", "Ogre", "Horror", "Cyclops", "Beholder", "Golem", "Demon"]
-const HITPOINTS = [20, 30, 30, 40, 60, 40, 20,
-	30, 30, 30, 50, 40, 60, 40,
-	60, 40, 80, 70, 80, 60, 100, 90]
+const HITPOINTS = [20, 22, 24, 30, 50, 26, 5,
+	20, 25, 28, 35, 30, 55, 5,
+	49, 38, 65, 13, 70, 66, 100, 90]
 const ATTACK_DAMAGE = [1, 1, 2, 3, 4, 3, 2,
-	2, 10, 3, 6, 5, 6, 5,
+	2, 7, 3, 6, 5, 4, 5,
 	6, 10, 8, 13, 18, 6, 32, 20]
 const ATTACK_DELAYS = [3, 1, 3, 3, 5, 3, 3,
 	1, 3, 1, 3, 3, 3, 3,
-	3, 3, 5, 5, 5, 3, 10, 3]
+	4, 4, 6, 6, 6, 4, 10, 4]
 const WEAKSPOTS = [3, 3, -1, 5, 2, -1, 3,
 	3, 4, 3, 5, 4, 2, 3,
 	5, -1, 3, -1, 1, -1, -1, -1]
