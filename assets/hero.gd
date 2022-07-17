@@ -106,3 +106,4 @@ func _on_Monster_hero_healed(amount):
 		return
 	hitpoints += amount
 	$Hitpoints.text = "HP: %s" %  [hitpoints]
+	$HealSfx.play()
