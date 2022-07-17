@@ -38,7 +38,9 @@ func roll(weights):
 		results.append(die.get_result())
 	emit_signal("roll_determined", results)
 
-func reset():
+func reset(monster_attack_delay = null):
+	if monster_attack_delay != null:
+		hold_duration = monster_attack_delay
 	hold_delay = initial_roll_duration + roll_duration
 	roll_delay = hold_delay + hold_duration
 	for die in [$Die1, $Die2, $Die3]:

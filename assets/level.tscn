@@ -506,6 +506,7 @@ shape = SubResource( 30 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Gremlin"]
 frames = SubResource( 2 )
 animation = "idle"
+frame = 1
 playing = true
 offset = Vector2( 0, -1 )
 
@@ -678,7 +679,7 @@ __meta__ = {
 modulate = Color( 0.258824, 0.431373, 0.364706, 1 )
 position = Vector2( -800, -320 )
 script = ExtResource( 11 )
-roll_duration = 2.0
+roll_duration = 1.0
 hold_duration = 3.0
 
 [node name="Die1" parent="Monster/MonsterRoller" instance=ExtResource( 9 )]

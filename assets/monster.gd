@@ -6,11 +6,14 @@ const NAMES = ["Rodent", "Spiders", "Slimes", "Big Beetle", "Zombie", "Slime Hea
 	"Giant Centipede", "Wyvern", "Giant Spider", "Goblin", "Snake", "Skeleton", "Giant Bat",
 	"Orc", "Giant Scorpion", "Ogre", "Horror", "Cyclops", "Beholder", "Golem", "Demon"]
 const HITPOINTS = [20, 30, 30, 40, 60, 40, 20,
-	30, 30, 40, 50, 40, 60, 40,
+	30, 30, 30, 50, 40, 60, 40,
 	60, 40, 80, 70, 80, 60, 100, 90]
-const ATTACK_DAMAGE = [1, 3, 3, 4, 2, 4, 3,
-	5, 10, 8, 6, 5, 6, 5,
-	6, 10, 5, 8, 15, 6, 7, 20]
+const ATTACK_DAMAGE = [1, 1, 2, 3, 4, 3, 2,
+	2, 10, 3, 6, 5, 6, 5,
+	6, 10, 8, 13, 18, 6, 32, 20]
+const ATTACK_DELAYS = [3, 1, 3, 3, 5, 3, 3,
+	1, 3, 1, 3, 3, 3, 3,
+	3, 3, 5, 5, 5, 3, 10, 3]
 const WEAKSPOTS = [3, 3, -1, 5, 2, -1, 3,
 	3, 4, 3, 5, 4, 2, 3,
 	5, -1, 3, -1, 1, -1, -1, -1]
@@ -27,6 +30,7 @@ const SPELL_IMMUNITIES = [[], [], [], [], [3], [], [],
 var monster_offset = 0
 var hitpoints = 40
 var attack_damage = 5
+var attack_delay = 3
 var weakspot_number = 3
 var vulnerabilities = []
 var full_immunities = []
@@ -57,6 +61,12 @@ func _ready():
 
 func build_description_bbcode():
 	var bbcode = "%s ATK" % [attack_damage]
+	if attack_delay < 3:
+		bbcode = "%s (FAST)" % [bbcode]
+	elif attack_delay >= 10:
+		bbcode = "%s (VERY SLOW)" % [bbcode]
+	elif attack_delay >= 5:
+		bbcode = "%s (SLOW)" % [bbcode]
 	if NAMES[monster_offset] == "Snake":
 		bbcode = "%s\n%s" % [bbcode, "Also crits with (1)(1)."]
 	elif NAMES[monster_offset] == "Beholder":
@@ -111,6 +121,7 @@ func _process(delta):
 			frame = monster_offset
 			hitpoints = HITPOINTS[monster_offset]
 			attack_damage = ATTACK_DAMAGE[monster_offset]
+			attack_delay = ATTACK_DELAYS[monster_offset]
 			weakspot_number = WEAKSPOTS[monster_offset]
 			vulnerabilities = VULNERABILITIES[monster_offset]
 			full_immunities = FULL_IMMUNITIES[monster_offset]
@@ -123,7 +134,7 @@ func _process(delta):
 				$Name.text = NAMES[monster_offset]
 			$Description.bbcode_text = build_description_bbcode()
 			$Hitpoints.text = "HP: %s" %  [hitpoints]
-			$MonsterRoller.reset()
+			$MonsterRoller.reset(attack_delay)
 			$MonsterRoller.visible = true
 	elif hex_end_delay > 0:
 		hex_end_delay -= delta
